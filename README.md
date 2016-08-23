@@ -6,6 +6,7 @@ A simple API for storing some chat messages.
 
 ```
 npm install
+npm run selenium-install
 ```
 
 ## Running
