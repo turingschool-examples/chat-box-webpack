@@ -106,7 +106,7 @@ describe('POST /messages', () => {
       .expect(422, done);
   });
 
-  it('should strip illegal HTML tags', () => {
+  it('should strip illegal HTML tags', (done) => {
     const message = { user: 'Steve', content: '<script>alert("wow!")</script>Hello' };
 
     request(app)

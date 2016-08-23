@@ -10,7 +10,7 @@ const port = process.env.PORT || 3001;
 
 // Spin up the server before running the tests.
 before((done) => {
-  server = app.listen(port, (err, result) => {
+  server = app.listen(port, (err) => {
     if (err) { return done(err); }
     done();
   });
