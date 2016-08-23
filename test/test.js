@@ -125,7 +125,7 @@ describe('UPDATE /messages/:id', () => {
       .put(`/messages/${message.id}`)
       .send({ message: { user: 'Louisa' } })
       .expect(204)
-      .end((err, res) => {
+      .end(() => {
         assert.equal(app.locals.messages[0].user, 'Louisa');
         done();
       });
@@ -154,7 +154,7 @@ describe('DELETE /messages/:id', () => {
     request(app)
       .delete(`/messages/${this.message.id}`)
       .expect(204)
-      .end((err, res) => {
+      .end(() => {
         assert.equal(app.locals.messages.length, 0);
         done();
       });
