@@ -1,11 +1,11 @@
 const assert = require('assert');
 const request = require('supertest');
-const app = require('../');
+const app = require('../server');
 
 describe('GET /messages', () => {
 
   beforeEach(() => {
-    app.locals.messages = [{ id: 1, user: 'Steve', message: 'banana' }];
+    app.locals.messages = [{ id: 1, user: 'Steve', content: 'banana' }];
   });
 
   afterEach(() => {
@@ -30,7 +30,7 @@ describe('GET /messages', () => {
 
 describe('GET /messages/:id', () => {
   beforeEach(() => {
-    this.message = { id: 1, user: 'Steve', message: 'banana' };
+    this.message = { id: 1, user: 'Steve', content: 'banana' };
     app.locals.messages = [this.message];
   });
 
@@ -63,7 +63,7 @@ describe('POST /messages', () => {
   });
 
   it('should create a new message', (done) => {
-    const message = { user: 'Steve', message: 'wowow', id: 1 };
+    const message = { user: 'Steve', content: 'wowow', id: 1 };
 
     request(app)
       .post('/messages')
@@ -76,7 +76,7 @@ describe('POST /messages', () => {
   });
 
   it('should assign an id to the new message when one is not provided', (done) => {
-    const message = { user: 'Steve', message: 'wowow' };
+    const message = { user: 'Steve', content: 'wowow' };
 
     request(app)
       .post('/messages')
@@ -89,7 +89,7 @@ describe('POST /messages', () => {
   });
 
   it('should return a 422 if the request is missing a user', (done) => {
-    const message = { message: 'wowow' };
+    const message = { content: 'wowow' };
 
     request(app)
       .post('/messages')
@@ -106,12 +106,25 @@ describe('POST /messages', () => {
       .expect(422, done);
   });
 
+  it('should strip illegal HTML tags', () => {
+    const message = { user: 'Steve', content: '<script>alert("wow!")</script>Hello' };
+
+    request(app)
+      .post('/messages')
+      .send({ message })
+      .expect(201)
+      .end(() => {
+        assert.equal(app.locals.messages[0], 'Hello');
+        done();
+      });
+  });
+
 });
 
 describe('UPDATE /messages/:id', () => {
 
   beforeEach(() => {
-    app.locals.messages = [{ id: 1, user: 'Steve', message: 'banana' }];
+    app.locals.messages = [{ id: 1, user: 'Steve', content: 'banana' }];
   });
 
   afterEach(() => {
@@ -142,7 +155,7 @@ describe('UPDATE /messages/:id', () => {
 describe('DELETE /messages/:id', () => {
 
   beforeEach(() => {
-    this.message = { id: 1, user: 'Steve', message: 'banana' };
+    this.message = { id: 1, user: 'Steve', content: 'banana' };
     app.locals.messages = [this.message];
   });
 

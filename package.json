@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "concurrently 'npm run server' 'webpack --watch'",
+    "postinstall": "npm run build",
     "build": "webpack",
     "server": "node server.js",
     "lint": "jshint server.js test lib && eslint server.js test lib"

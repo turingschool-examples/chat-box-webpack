@@ -4,6 +4,7 @@ const http = require('http');
 const cors = require('express-cors');
 const bodyParser = require('body-parser');
 const hbs = require('hbs');
+const sanitizeHtml = require('sanitize-html');
 
 http.Server(app);
 
@@ -37,7 +38,7 @@ app.get('/messages/:id', (request, response) => {
 app.post('/messages', (request, response) => {
   const { message } = request.body;
 
-  for (let requiredParameter of ['user', 'message']) {
+  for (let requiredParameter of ['user', 'content']) {
     if (!message[requiredParameter]) {
       return response
         .status(422)
@@ -46,8 +47,8 @@ app.post('/messages', (request, response) => {
   }
 
   message.id = message.id || Date.now();
-  app.locals.messages.push(message);
-  response.status(201).send({message: message });
+  app.locals.messages.push(sanitize(message));
+  response.status(201).send({ message });
 });
 
 app.put('/messages/:id', (request, response) => {
@@ -58,7 +59,7 @@ app.put('/messages/:id', (request, response) => {
   if (index === -1) { return response.sendStatus(404); }
 
   const oldMessage = app.locals.messages[index];
-  app.locals.messages[index] = Object.assign(oldMessage, message);
+  app.locals.messages[index] = Object.assign(oldMessage, sanitize(message));
 
   return response.sendStatus(204);
 });
@@ -73,6 +74,18 @@ app.delete('/messages/:id', (request, response) => {
   app.locals.messages = app.locals.messages.filter((m) => m.id !== id);
   response.sendStatus(204);
 });
+
+function sanitize(message) {
+  message.user = sanitizeHtml(message.user, {
+    allowedTags: sanitizeHtml.defaults.allowedTags
+  });
+
+  message.content = sanitizeHtml(message.content, {
+    allowedTags: sanitizeHtml.defaults.allowedTags
+  });
+
+  return message;
+}
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {
