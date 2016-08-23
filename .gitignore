@@ -1,3 +1,5 @@
 node_modules
 
 public/script.js
+
+test/specs/selenium.jar
