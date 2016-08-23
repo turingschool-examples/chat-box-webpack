@@ -1,32 +1,37 @@
 {
-  "name": "command-center",
+  "name": "chat-box-webpack",
   "version": "1.0.0",
-  "description": "Stay up to date on the latest toots.",
+  "description": "Like Chat Box, but with webpack.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "start": "node index.js"
+    "test": "mocha",
+    "start": "concurrently 'npm run server' 'webpack --watch'",
+    "build": "webpack",
+    "server": "node index.js",
+    "lint": "jshint index.js test && eslint index.js test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/turingschool-examples/command-center.git"
+    "url": "https://github.com/turingschool-examples/chat-box-webpack.git"
   },
   "author": "Steve Kinney",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/turingschool-examples/command-center/issues"
+    "url": "https://github.com/turingschool-examples/chat-box-webpack/issues"
   },
-  "homepage": "https://github.com/turingschool-examples/command-center",
+  "homepage": "https://github.com/turingschool-examples/chat-box-webpack",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.12.3",
     "express-cors": "0.0.3",
+    "hbs": "^4.0.0",
     "supertest": "^2.0.0"
   },
   "devDependencies": {
     "concurrently": "^2.2.0",
+    "eslint": "^3.3.1",
+    "jshint": "^2.9.3",
     "mocha": "^3.0.2",
-    "nodemon": "^1.3.7",
     "webpack": "^1.13.2"
   },
   "engines": {
