@@ -1,3 +1,5 @@
+$border-color: #CCC;
+
 body, input {
   font: menu;
 }
@@ -8,7 +10,7 @@ body {
 }
 
 .messages {
-  border: 1px dashed #CCC;
+  border: 1px dashed $border-color;
   min-height: 10px;
-  margin-bottom: 1em;
+  margin: 1em 0;
 }
