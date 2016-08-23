@@ -21,7 +21,7 @@ app.locals.messages = [];
 hbs.registerPartials(__dirname + '/views/partials');
 
 app.get('/', (request, response) => {
-  response.render('index', { title: 'Hey', message: 'Hello there!'});
+  response.render('index', { title: app.locals.title });
 });
 
 app.get('/messages', (request, response) => {
