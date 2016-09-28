@@ -51,7 +51,7 @@ describe('GET /messages/:id', () => {
   it('should return a 404 if the id is not valid', (done) => {
     request(app)
       .get('/messages/invalid')
-        .expect(404, done);
+      .expect(404, done);
   });
 });
 
